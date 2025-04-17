@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guia - Aplicativo de Informações</title>
+  <style>
+    :root {
+      --color-primary: #0077B6;
+      --color-secondary: #48CAE4;
+      --color-accent: #023E8A;
+      --color-bg: #F0F4F8;
+      --color-white: #FFFFFF;
+      --transition-speed: 0.3s;
+      --radius: 0.5rem;
+      --gap: 1rem;
+      --max-content-width: 800px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color var(--transition-speed), transform var(--transition-speed); }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--color-bg); color: var(--color-accent); display: flex; flex-direction: column; min-height: 100vh; line-height: 1.6; }
+    header { position: sticky; top: 0; background-color: var(--color-primary); color: var(--color-white); padding: 1rem var(--gap); text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 10; }
+    header h1 { font-size: 1.75rem; }
+    main { flex: 1; padding: var(--gap); display: flex; flex-direction: column; align-items: center; gap: var(--gap); }
+    .button-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: var(--gap); width:100%; max-width: var(--max-content-width); }
+    .button-grid button { padding:1rem; font-size:1rem; border:none; border-radius: var(--radius); background-color: var(--color-secondary); color: var(--color-white); cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    .button-grid button:hover { background-color: var(--color-primary); transform: translateY(-2px); }
+    .info { margin-top: 2rem; background-color: var(--color-white); padding:2rem; border-radius: var(--radius); box-shadow:0 4px 15px rgba(0,0,0,0.1); max-width: var(--max-content-width); width:100%; position:relative; overflow-y:auto; max-height:80vh; }
+    .info h2 { margin-bottom:1rem; color: var(--color-primary); font-size:1.5rem; border-bottom:2px solid var(--color-secondary); padding-bottom:0.5rem; }
+    .info p { margin-bottom:1rem; text-align:justify; }
+    .info img, .info iframe { display:block; max-width:100%; height:auto; margin-bottom:1rem; border-radius: var(--radius); box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+    .info table { width:100%; border-collapse:collapse; margin-bottom:1rem; }
+    .info th, .info td { border:1px solid #ddd; padding:0.75rem; text-align:center; }
+    .info th { background-color: var(--color-secondary); color: var(--color-white); }
+    .info input, .info select { width:100%; padding:0.5rem; margin-bottom:1rem; border:1px solid #ccc; border-radius: var(--radius); }
+    .info label { display:block; font-weight:500; margin-bottom:0.5rem; }
+    /* Estilo específico para escolha de tempo */
+    .info .select-label { display:flex; flex-direction:column; font-weight:500; margin-bottom:1rem; }
+    .info .select-label select { width:100%; padding:0.75rem; border:1px solid #ccc; border-radius: var(--radius); background-color: var(--color-white); font-size:1rem; }
+    .info button.calculate { background-color: var(--color-accent); color: var(--color-white); border:none; padding:0.75rem 1.5rem; border-radius: var(--radius); cursor:pointer; font-size:1rem; margin-bottom:1rem; }
+    .info button.calculate:hover { background-color: var(--color-primary); }
+    .result { font-weight:bold; margin-bottom:1rem; }
+    .alert-ok { color:green; }
+    .alert-high { color:red; }
+    .back-button { position:absolute; top:1rem; right:1rem; background-color: var(--color-accent); color: var(--color-white); border:none; padding:0.5rem 1rem; border-radius: var(--radius); cursor:pointer; font-size:0.9rem; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+    .back-button:hover { background-color: var(--color-primary); transform: translateY(-1px); }
+    @media (max-width:768px) { header h1 { font-size:1.5rem; } .button-grid button { font-size:0.9rem; padding:0.8rem; } .info { padding:1.5rem; } }
+    @media (max-width:480px) { .back-button { top:0.5rem; right:0.5rem; padding:0.4rem 0.8rem; font-size:0.8rem; } .button-grid { grid-template-columns:1fr; } .button-grid button { font-size:1rem; padding:0.8rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Guia Para Suporte Ventilatório Pediátrico</h1>
+  </header>
+  <main>
+    <div class="button-grid">
+      <button onclick="mostrarInfo('vm-pre')">Parâmetros Ventilatórios - Prematuros</button>
+      <button onclick="mostrarInfo('vm-neo')">Parâmetros Ventilatórios - Neonatos</button>
+      <button onclick="mostrarInfo('vm-child')">Parâmetros Ventilatórios - Pediátricos</button>
+      <button onclick="mostrarInfo('vni-child')">Ventilação Mecânica Não-Invasiva</button>
+      <button onclick="mostrarInfo('param4')">Sinais Vitais</button>
+      <button onclick="mostrarInfo('param5')">Aspiração Nasal</button>
+      <button onclick="mostrarInfo('param6')">CNAF</button>
+      <button onclick="mostrarInfo('param7')">ROX index</button>
+    </div>
+    <div id="info-container" class="info" style="display:none;"></div>
+  </main>
+
+  <script>
+    function mostrarInfo(tipo) {
+      const container = document.getElementById('info-container');
+      let titulo = '';
+      let conteudo = '';
+
+      switch(tipo) {
+        case 'vm-pre':
+          titulo = 'Parâmetros Ventilatórios - Prematuros';
+          conteudo = `
+            <p><strong> Modo:</strong> Pressão controlada - PCV</p>
+            <p><strong> PIP:</strong> 18-22 cmH2O</p>
+            <p><strong> Volume Corrente (VC):</strong> 6+8 mL/Kg</p>
+            <p><strong> Tempo Inspiratório (TI):</strong> 0,3 - 0,4 segundos</p>
+            <p><strong> Relação I:E:</strong> 1:2 - 1:4 (em caso de obstrução aérea)</p>
+            <p><strong> Frequência Respiratória (FR):</strong> 40-50 irpm/p>
+            <p><strong> FiO₂:</strong> Mínima para manter saturação ≈90%.</p>
+            <p><strong> PEEP:</strong> 3-6/7 cmH2O</p>
+            <p><strong> Orientações:</strong> Demais alterações nos parâmetros ventilatórios devem ser baseadas na interpretação gasométrica. NÃO ALTERE MAIS DO QUE 2 PARÂMETROS POR VEZ.</p>
+          `;
+          break;
+        case 'vm-neo':
+          titulo = 'Parâmetros Ventilatórios - Neonatos';
+          conteudo = `
+            <p><strong> Modo:</strong> Pressão controlada - PCV</p>
+            <p><strong> PIP:</strong> 18-20 cmH2O</p>
+            <p><strong> Volume Corrente (VC):</strong> 6-8 mL/Kg</p>
+            <p><strong> Tempo Inspiratório (TI):</strong> 0,3 - 0,4 segundos</p>
+            <p><strong> Relação I:E:</strong> 1:2 - 1:4 (em caso de obstrução aérea)</p>
+            <p><strong> Frequência Respiratória (FR):</strong> 30-40 irpm/p>
+            <p><strong> FiO₂:</strong> Mínima para manter saturação ≈90%.</p>
+            <p><strong> PEEP:</strong> 3-6 cmH2O</p>
+            <p><strong> Orientações:</strong> Demais alterações nos parâmetros ventilatórios devem ser baseadas na interpretação gasométrica. NÃO ALTERE MAIS DO QUE 2 PARÂMETROS POR VEZ.</p>
+          `;
+          break;
+        case 'vm-child':
+          titulo = 'Parâmetros Ventilatórios - Pediátrico';
+          conteudo = `
+            <p><strong> Modo:</strong> Pressão controlada - PCV</p>
+            <p><strong> PIP:</strong> <28 cmH2O</p>
+            <p><strong> Volume Corrente (VC):</strong> 5-8 mL/Kg</p>
+            <p><strong> Tempo Inspiratório (TI):</strong> 0,6 - 0,8 segundos</p>
+            <p><strong> Relação I:E:</strong> 1:2 - 1:4 (em caso de obstrução aérea)</p>
+            <p><strong> Frequência Respiratória (FR):</strong> 20-25 irpm (de 1 a 5 anos) e 15 - 20 irpm (de 5 - 12 anos)</p>
+            <p><strong> FiO₂:</strong> Mínima para manter saturação ≈90%.</p>
+            <p><strong> PEEP:</strong> 3-5 cmH2O</p>
+            <p><strong> Orientações:</strong> Demais alterações nos parâmetros ventilatórios devem ser baseadas na interpretação gasométrica. NÃO ALTERE MAIS DO QUE 2 PARÂMETROS POR VEZ.</p>
+          `;
+	  break;
+        case 'vni-child':
+          titulo = 'Ventilação Mecânica Não-Invasiva';
+          conteudo = `
+            <p><strong> Indicação:</strong> IRPA com presença de sinais de desconforto respiratório (DR) como dispneia, taquipneia e utilização de musculatura acessória.</p>
+            <p><strong> Contraindicação:</strong> Instabilidade hemodinâmica, ECG < 10, presença de deformidade facial, trauma em VAS, pneumotórax não drenado.</p>
+            <p><strong> CPAP: </strong> CPAP 5-7 cmH2O com FiO2 a 50% (caso não haja hipercapnia). </p>
+            <p><strong> BIPAP: </strong> BIPAP Inicial com IPAP 8-12 cmH2O | EPAP 5-7 cmH2O e FIO2 50% (caso hipercapnia aguda > 45 mmHg ou crônica > 60 mmHg. </p>
+            <p><strong> Tempo de terapia:</strong> 2 horas de VNI.</p>
+            <p><strong> Caso piora: </strong> Sugerir IOT.</p>
+            <p><strong> Se apresentar boa resposta:</strong> Acompanhar continuamente a cada 2 horas por 24 horas. </p>
+            <p><strong> Orientações:</strong> São considerados critérios de interrupção da VNIcom necessidade imediata de TOT: presença de FIO2 > 60%; elevação progressiva dos parâmetros ventilatórios; dependência contínua da VNI após 24 horas, sem tolerância de permanência por pequenos períodos fora do dispositivo; ausência de melhora nas trocas gasosas (hipercapnia com acidose
+respiratória importante e/ou hipoxemia grave, com relação PaO2/FIO2 < 100 nas primeiras 2 horas); ECG menor que 10 adaptada para população pediátrica; intolerância do paciente ou agitação pelo uso da VNI.</p>
+<p><strong> Orientações 2:</strong> A escolha da interface ideal ainda é considerada essencial para uma terapia efetiva, uma vez que o seu ajuste ao rosto da criança deve ser realizado de forma adequada, visando minimizar o escape e vazamento de ar, assegurar a estabilidade e impedir movimentos e deslocamentos da interface, maximizando, assim, a sincronia do paciente com o ventilador e aumentando a chance de sucesso da VNI.</p>
+          `;
+	  break;
+       case 'param4':
+          titulo = 'Sinais Vitais';
+          conteudo = `
+            <table>
+              <thead>
+                <tr>
+                  <th>Idade</th>
+                  <th>Frequência Cardíaca (bpm)</th>
+                  <th>Pressão Arterial Sistólica (mmHg)</th>
+                  <th>Frequência Respiratória (irpm)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Neonato</td><td>100-160</td><td>60-90</td><td>30-60</td></tr>
+                <tr><td>Pediátrico</td><td>90-120</td><td>80-100</td><td>30-40</td></tr>
+                <tr><td>2-5 anos</td><td>95-140</td><td>80-120</td><td>20-30</td></tr>
+                <tr><td>5-12 anos</td><td>80-120</td><td>90-110</td><td>15-20</td></tr>
+                <tr><td>>12 anos</td><td>60-100</td><td>100-120</td><td>12-15</td></tr>
+                </tbody>
+            </table>
+          `;
+          break;
+        case 'param5':
+          titulo = 'Aspiração Nasal';
+          conteudo = `
+            <table>
+              <thead>
+                <tr>
+                  <th>Idade</th>
+                  <th>mL</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Neonato (1 mês)</td><td>1 mL por narina</td></tr>
+                <tr><td>2-4 meses</td><td>5 mL por narina</td></tr>
+                <tr><td>4-6 meses</td><td>5 a 10 mL por narina</td></tr>
+                <tr><td>6-12 meses</td><td>10 mL por narina</td></tr>
+                <tr><td>>12 meses</td><td>10-20 mL por narina</td></tr>
+                </tbody>
+            </table>
+          `;
+          break;
+case 'param6':
+          titulo = 'CNAF';
+          conteudo = `
+            <p><strong> Cânula Nasal:</strong> Ocupando 1/2 das narinas</p>
+            <p><strong> Aquecimento:</strong> 34-37ºC</p>
+            <p><strong> FiO2:</strong> Suficiente para manter SpO2 92-97%</p>
+            <p><strong> Fluxo - 0-15 kg:</strong> 2 L/Kg/min</p>            
+            <p><strong> Fluxo - 16-30 kg:</strong> 35 L/min</p>
+            <p><strong> Fluxo - 31-50 kg:</strong> 40 L/min</p>
+            <p><strong> Fluxo - > 50 kg:</strong> 50 L/min</p>
+          `;
+	  break;
+case 'param7':
+          titulo = 'ROX Index';
+          conteudo = `
+            <p>Nesta avaliação, usaremos o ROX modificado para pacientes pediátricos descrito por Yuniar et al. (2024). Esta avaliação é preliminar em 60 minutos de CNAF. Caso haja indicação para intubação, discuta com a equipe</p>
+             <p><strong>Cálculo:</strong> ROX Index = (SpO₂ / FiO₂) / Frequência Respiratória</p>
+            <label class="select-label">Tempo de terapia (min):
+              <select id="rox-time">
+                <option value="60">60 minutos</option>
+                <option value="90">90 minutos</option>
+              </select>
+            </label>
+            <label>SpO₂ (%)<br><input type="number" id="rox-spo2" min="0" max="100" step="0.1"></label>
+            <label>FiO₂ (decimal ex: 0.5)<br><input type="number" id="rox-fio2" min="0" max="1" step="0.01"></label>
+            <label>Frequência Respiratória (irpm)<br><input type="number" id="rox-fr" min="0" step="1"></label>
+            <button class="calculate" onclick="calcularRox()">Calcular ROX</button>
+            <div id="rox-result" class="result"></div>
+          `;
+          break;
+        default:
+          return;
+      }
+      container.innerHTML = `<button class="back-button" onclick="ocultarInfo()">Recuar</button><h2>${titulo}</h2>${conteudo}`;
+      container.style.display = 'block';
+}
+function calcularRox() {
+  const spo2 = parseFloat(document.getElementById('rox-spo2').value);
+  const fio2 = parseFloat(document.getElementById('rox-fio2').value);
+  const fr   = parseFloat(document.getElementById('rox-fr').value);
+  const time = parseInt  (document.getElementById('rox-time').value, 10);
+
+  if (!spo2 || !fio2 || !fr) {
+    alert('Por favor, preencha todos os campos.');
+    return;
+  }
+
+  // defina limites dependendo do tempo
+  const threshold = (time === 60)
+    ? 5.52    // limite para 60 min
+    : 5.68;   // limite para 90 min (pode mudar se precisar)
+
+  const rox = (spo2 / fio2) / fr;
+  const resDiv = document.getElementById('rox-result');
+  let message = `Índice ROX: ${rox.toFixed(2)}`;
+
+  if (rox >= threshold) {
+    message += ` — ≥ ${threshold.toFixed(2)}: menor risco de intubação ✅`;
+    resDiv.className = 'result alert-ok';
+  } else {
+    message += ` — < ${threshold.toFixed(2)}: alto risco de falha de CNAF ⚠️`;
+    resDiv.className = 'result alert-high';
+  }
+
+  resDiv.innerHTML = message;
+}
+
+    function ocultarInfo() { document.getElementById('info-container').style.display = 'none'; }
+  </script>
+</body>
+</html>
