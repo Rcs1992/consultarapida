@@ -246,9 +246,49 @@
             border-radius: 28px;
         }
         .table-wrapper { overflow-x: auto; }
+        
+        /* Estilos para a tabela de desinfecção com imagens */
+        .disinfection-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+        .disinfection-table td {
+            border: 1px solid #d4dee8;
+            padding: 16px 12px;
+            vertical-align: middle;
+        }
+        .step-image {
+            width: 120px;
+            text-align: center;
+        }
+        .step-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .step-text {
+            text-align: left;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #1f2f3e;
+        }
+        .finalize-box {
+            background: #e8f0fe;
+            border-radius: 20px;
+            padding: 16px;
+            margin: 16px 0 8px;
+            border-left: 6px solid #0088cc;
+        }
         @media (max-width: 550px) {
             .accordion-btn { font-size: 1rem; padding: 12px 18px; }
             .vital-table th, .vital-table td { font-size: 0.7rem; padding: 6px 3px; }
+            .step-image { width: 90px; }
+            .step-text { font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -256,7 +296,7 @@
 <div class="app-container">
     <div class="hospital-header">
         <h1>🩺 FisioVital <span>HUSE</span></h1>
-        <div class="sub">Manual de consulta</div>
+        <div class="sub">Manual de Consulta</div>
     </div>
 
     <!-- BOTÃO 1: Sinais Vitais Pediátrico -->
@@ -265,44 +305,22 @@
 
     <!-- BOTÃO 2: Sinais Vitais Adulto -->
     <button class="accordion-btn" data-target="content-adult"><span>🧑 Sinais Vitais (Adulto)</span><span class="btn-icon">▼</span></button>
-    <div id="content-adult" class="accordion-content"><div class="content-inner"><div class="section-title">📋 Valores Adulto</div><div class="table-wrapper"><table class="vital-table"><thead>——<th>Parâmetro</th><th>Faixa Normal</th><th>Observações</th> </tr</thead><tbody><tr><td>Frequência Cardíaca</td><td>60–100 bpm</td><td>Bradicardia < 60 | Taquicardia > 100</td></tr><tr><td>Frequência Respiratória</td><td>12–18 irpm</td><td>>20 taquipneia</td></tr><tr><td>Pressão Arterial</td><td>Sistólica < 120, Diastólica < 80</td><td>Ótima <120/80 mmHg</td></tr><tr><td>Temperatura</td><td>36,5°C – 37,2°C</td><td>Oral/axilar</td></tr><tr><td>SpO₂</td><td>95% – 100%</td><td>ar ambiente</td></tr></tbody></table></div><div class="badge-note">📌 Cleveland Clinic + Diretrizes</div></div></div>
+    <div id="content-adult" class="accordion-content"><div class="content-inner"><div class="section-title">📋 Valores Adulto</div><div class="table-wrapper"><table class="vital-table"><thead><th>Parâmetro</th><th>Faixa Normal</th><th>Observações</th></tr></thead><tbody><tr><td>Frequência Cardíaca</td><td>60–100 bpm</td><td>Bradicardia < 60 | Taquicardia > 100</td></tr><tr><td>Frequência Respiratória</td><td>12–18 irpm</td><td>>20 taquipneia</td></tr><tr><td>Pressão Arterial</td><td>Sistólica < 120, Diastólica < 80</td><td>Ótima <120/80 mmHg</td></tr><tr><td>Temperatura</td><td>36,5°C – 37,2°C</td><td>Oral/axilar</td></tr><tr><td>SpO₂</td><td>95% – 100%</td><td>ar ambiente</td></tr></tbody></table></div><div class="badge-note">📌 Cleveland Clinic + Diretrizes</div></div></div>
 
     <!-- BOTÃO 3: VNI -->
     <button class="accordion-btn" data-target="content-vni"><span>💨 Ventilação Não Invasiva (VNI)</span><span class="btn-icon">▼</span></button>
     <div id="content-vni" class="accordion-content"><div class="content-inner"><div class="section-title">📌 Indicações e Contraindicações (VNI)</div><div class="table-wrapper"><table class="vital-table"><thead><th>Indicações principais</th><th>Contraindicações (VERMELHO = ABSOLUTAS)</th></tr></thead><tbody><tr><td>DPOC exacerbado com hipercapnia</td><td class="contra-indicacao absoluta">Parada cardiorrespiratória / instabilidade hemodinâmica</td></tr><tr><td>Edema agudo de pulmão cardiogênico</td><td class="contra-indicacao absoluta">Falência de via aérea / rebaixamento grave (Glasgow < 8)</td></tr><tr><td>Insuficiência respiratória hipercápnica</td><td class="contra-indicacao">Vômitos incoercíveis, sangramento GI ativo</td></tr><tr><td>Hipoxemia refratária em imunocomprometidos</td><td class="contra-indicacao absoluta">Deformidade facial / trauma craniofacial grave</td></tr><tr><td>Desmame de VM / pós-extubação</td><td class="contra-indicacao">Obstrução fixa de vias aéreas superiores</td></tr><tr><td></td><td class="contra-indicacao">Pneumotórax não drenado</td></tr></tbody></table></div><div class="section-title">⚙️ Parâmetros Iniciais (BIPAP/CPAP)</div><div class="table-wrapper"><table class="vital-table"><thead><th>Modo</th><th>Configuração sugerida</th><th>Ajustes</th></tr></thead><tbody><tr><td>EPAP/IPAP (BIPAP)</td><td>EPAP: 4-6 cmH₂O | IPAP: 8-12 cmH₂O</td><td>↑ gradiente pressão para ↑ VC</td></tr><tr><td>CPAP</td><td>5-10 cmH₂O (Edema agudo pulmonar)</td><td>Titular conforme SpO₂ >90%</td></tr><tr><td>FiO₂</td><td>Iniciar 40-60%</td><td>Ajustar para SpO₂ 88-92% (DPOC) ou >94% (outros)</td></tr><tr><td>Frequência de suporte</td><td>10-14 ipm (modo espontâneo/timed)</td><td>Evitar assincronia</td></tr></tbody></table></div><div class="section-title">📐 Calculadora HACOR</div><div class="calc-card"><div class="calc-row"><div class="calc-field"><label>FC (bpm)</label><input type="number" id="hacor_fc" value="95"></div><div class="calc-field"><label>pH</label><input type="number" id="hacor_ph" value="7.35" step="0.01"></div><div class="calc-field"><label>Glasgow (GCS)</label><input type="number" id="hacor_gcs" value="15"></div><div class="calc-field"><label>PaO₂/FiO₂</label><input type="number" id="hacor_pf" value="201"></div><div class="calc-field"><label>FR (irpm)</label><input type="number" id="hacor_fr" value="12"></div></div><button class="calc-btn" id="calcHacorBtn">Calcular escore HACOR</button><div id="hacorResult" class="result-value"></div></div></div></div>
 
-    <!-- BOTÃO 4: CNAF (NOVO) -->
+    <!-- BOTÃO 4: CNAF -->
     <button class="accordion-btn" data-target="content-cnaf"><span>💨 CNAF – Cânula Nasal de Alto Fluxo</span><span class="btn-icon">▼</span></button>
     <div id="content-cnaf" class="accordion-content">
         <div class="content-inner">
             <div class="section-title">📌 Indicações e Contraindicações (CNAF)</div>
-            <div class="table-wrapper">
-                <table class="vital-table">
-                    <thead><th>Indicações principais</th><th>Contraindicações / Precauções</th></tr></thead>
-                    <tbody>
-                        <tr><td>Insuficiência respiratória hipoxêmica (pneumonia, COVID-19)</td><td class="contra-indicacao">Instabilidade hemodinâmica (PAS < 90 mmHg, vasopressores em altas doses)</td></tr>
-                        <tr><td>Pós-extubação – prevenção de falência</td><td class="contra-indicacao">Rebaixamento do nível de consciência (Glasgow < 8)</td></tr>
-                        <tr><td>Edema agudo de pulmão cardiogênico (como alternativa à VNI)</td><td class="contra-indicacao">Obstrução grave de vias aéreas superiores</td></tr>
-                        <tr><td>Hipoxemia leve a moderada com FR > 24 ipm</td><td class="contra-indicacao">Pneumotórax não drenado</td></tr>
-                        <tr><td>Pré-oxigenação para intubação</td><td class="contra-indicacao">Falência respiratória hipercápnica não tolerada (exacerbação de DPOC grave)</td></tr>
-                        <tr><td>Pacientes com contraindicação à VNI (ex: claustrofobia)</td><td class="contra-indicacao">Ausência de via aérea pérvia / trauma facial grave</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="badge-note">📌 A CNAF oferece fluxo de até 60 L/min, FiO₂ ajustável de 21 a 100%, com aquecimento e umidificação. Reduz espaço morto anatômico e fornece leve PEEP (efeito CPAP).</div>
+            <div class="table-wrapper"><table class="vital-table"><thead><th>Indicações principais</th><th>Contraindicações / Precauções</th></tr></thead><tbody><tr><td>Insuficiência respiratória hipoxêmica (pneumonia, COVID-19)</td><td class="contra-indicacao">Instabilidade hemodinâmica (PAS < 90 mmHg, vasopressores em altas doses)</td></tr><tr><td>Pós-extubação – prevenção de falência</td><td class="contra-indicacao">Rebaixamento do nível de consciência (Glasgow < 8)</td></tr><tr><td>Edema agudo de pulmão cardiogênico (como alternativa à VNI)</td><td class="contra-indicacao">Obstrução grave de vias aéreas superiores</td></tr><tr><td>Hipoxemia leve a moderada com FR > 24 ipm</td><td class="contra-indicacao">Pneumotórax não drenado</td></tr><tr><td>Pré-oxigenação para intubação</td><td class="contra-indicacao">Falência respiratória hipercápnica não tolerada (exacerbação de DPOC grave)</td></tr><tr><td>Pacientes com contraindicação à VNI (ex: claustrofobia)</td><td class="contra-indicacao">Ausência de via aérea pérvia / trauma facial grave</td></tr></tbody></table></div>
+            <div class="badge-note">📌 A CNAF oferece fluxo de até 60 L/min, FiO₂ ajustável de 21 a 100%, com aquecimento e umidificação.</div>
 
             <div class="section-title">⚙️ Parâmetros Iniciais e Ajustes (CNAF)</div>
-            <div class="table-wrapper">
-                <table class="vital-table">
-                    <thead><th>Parâmetro</th><th>Configuração inicial</th><th>Estratégia de ajuste</th></tr></thead>
-                    <tbody>
-                        <tr><td>Fluxo (L/min)</td><td>30 – 40 L/min</td><td>Aumentar até 60 L/min para melhorar oxigenação e redução do trabalho respiratório</td></tr>
-                        <tr><td>FiO₂ (%)</td><td>40 – 60% (ou até 100% em hipoxemia grave)</td><td>Titular para manter SpO₂ 92–96% (ou 88–92% em hipercápnicos)</td></tr>
-                        <tr><td>Temperatura</td><td>34 – 37°C</td><td>Alta temperatura melhora mucociliar e conforto</td></tr>
-                        <tr><td>Critérios de resposta</td><td>Melhora da SpO₂, redução da FR, conforto</td><td>Reavaliar ROX em 2, 6 e 12 horas para decidir continuidade ou intubação</td></tr>
-                    </tbody>
-                </table>
-            </div>
+            <div class="table-wrapper"><table class="vital-table"><thead><th>Parâmetro</th><th>Configuração inicial</th><th>Estratégia de ajuste</th></tr></thead><tbody><tr><td>Fluxo (L/min)</td><td>30 – 40 L/min</td><td>Aumentar até 60 L/min para melhorar oxigenação e redução do trabalho respiratório</td></tr><tr><td>FiO₂ (%)</td><td>40 – 60% (ou até 100% em hipoxemia grave)</td><td>Titular para manter SpO₂ 92–96% (ou 88–92% em hipercápnicos)</td></tr><tr><td>Temperatura</td><td>34 – 37°C</td><td>Alta temperatura melhora mucociliar e conforto</td></tr><tr><td>Critérios de resposta</td><td>Melhora da SpO₂, redução da FR, conforto</td><td>Reavaliar ROX em 2, 6 e 12 horas para decidir continuidade ou intubação</td></tr></tbody></table></div>
 
             <div class="section-title">📊 Calculadora ROX (Predictor de Sucesso da CNAF)</div>
             <div class="calc-card">
@@ -310,19 +328,51 @@
                     <div class="calc-field"><label>SpO₂ (%)</label><input type="number" id="rox_spo2" value="94" step="1" min="70" max="100"></div>
                     <div class="calc-field"><label>FiO₂ (%)</label><input type="number" id="rox_fio2" value="50" step="5" min="21" max="100"></div>
                     <div class="calc-field"><label>Frequência Respiratória (irpm)</label><input type="number" id="rox_fr" value="28" step="1"></div>
-                    <div class="calc-field"><label>Tempo de avaliação</label>
-                        <select id="rox_time">
-                            <option value="2">2 horas</option>
-                            <option value="6">6 horas</option>
-                            <option value="12" selected>12 horas</option>
-                        </select>
-                    </div>
+                    <div class="calc-field"><label>Tempo de avaliação</label><select id="rox_time"><option value="2">2 horas</option><option value="6">6 horas</option><option value="12" selected>12 horas</option></select></div>
                 </div>
                 <button class="calc-btn" id="calcRoxBtn">Calcular Índice ROX</button>
                 <div id="roxResult" class="result-value"></div>
                 <div id="roxInterpretation" class="abg-analysis" style="margin-top: 12px;"></div>
-                <div class="badge-note">📊 ROX = (SpO₂ / FiO₂) / FR. Valores de corte baseados em estudos de Roca et al. (J Crit Care 2016; AJRCCM 2019).</div>
+                <div class="badge-note">📊 ROX = (SpO₂ / FiO₂_fração) / FR. Valores de corte baseados em estudos de Roca et al.</div>
             </div>
+
+            <!-- NOVA SEÇÃO: DESINFECÇÃO DE ALTO NÍVEL (TUBO VERMELHO) -->
+            <div class="section-title">🧼 Desinfecção de Alto Nível (Tubo Vermelho)</div>
+            <div class="table-wrapper">
+                <table class="disinfection-table">
+                    <tr>
+                        <td class="step-image">
+                            <img src="https://i.ytimg.com/vi/jUHwqE9Vpj4/maxresdefault.jpg" alt="Conexão do tubo vermelho" style="max-width:100%; border-radius:12px;">
+                        </td>
+                        <td class="step-text">
+                            <strong>1. Conecte o tubo de desinfecção vermelho</strong><br>
+                            Conecte o tubo vermelho no <strong>lado azul do aparelho</strong> e a outra extremidade na <strong>saída de ar (lado vermelho)</strong> da câmara umidificadora.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="step-image">
+                            <img src="https://i.ytimg.com/vi/3GTAvXm6mtY/sddefault.jpg?sqp=-oaymwEmCIAFEOAD8quKqQMa8AEB-AH-DoACuAiKAgwIABABGGUgVShNMA8=&rs=AOn4CLCflcrxegGbHuPH3SL6k34lofFD6g" alt="Tampa azul do filtro" style="max-width:100%; border-radius:12px;">
+                        </td>
+                        <td class="step-text">
+                            <strong>2. Conecte a tampa azul do filtro</strong><br>
+                            Encaixe a <strong>tampa azul</strong> no lado direito da câmara (entrada de ar) para vedar o sistema.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="step-image">
+                            <img src="https://i.ytimg.com/vi/UNrUSvLJMqY/maxresdefault.jpg" alt="Iniciar ciclo" style="max-width:100%; border-radius:12px;">
+                        </td>
+                        <td class="step-text">
+                            <strong>3. Inicie o ciclo de desinfecção</strong><br>
+                            Ligue o aparelho e <strong>segure o botão liga/desliga por 3 segundos</strong>. O ciclo dura <strong>55 minutos</strong> (aquecimento da saída a no mínimo 87°C por 30 minutos).
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="finalize-box">
+                <strong>✅ Finalização:</strong> Após o término do ciclo (display mostrar <strong>'0'</strong>), desligue o aparelho. A desinfecção está completa. Remova o tubo de desinfecção e coloque uma <strong>capa de armazenamento limpa</strong>.
+            </div>
+            <div class="badge-note">🔁 Procedimento recomendado para desinfecção térmica de circuitos e câmaras (AIRVO™ e similares). Siga as orientações do fabricante.</div>
         </div>
     </div>
 
@@ -340,9 +390,9 @@
 
     <!-- BOTÃO 8: Referências ABNT -->
     <button class="accordion-btn" data-target="content-refs"><span>📚 Referências Bibliográficas (ABNT)</span><span class="btn-icon">▼</span></button>
-    <div id="content-refs" class="accordion-content"><div class="content-inner"><div class="section-title">📖 Citações completas – ABNT</div><ul class="ref-list"><li><strong>PEDSCASES.</strong> Pediatric Vital Signs Reference Chart. <em>PedsCases.com</em>, 2023. Disponível em: <a class="ref-link" href="https://www.pedscases.com/pediatric-vital-signs-reference-chart" target="_blank">https://www.pedscases.com/pediatric-vital-signs-reference-chart</a>. Acesso em: 25 mar. 2026.</li><li><strong>CLEVELAND CLINIC.</strong> Vital Signs. <em>my.clevelandclinic.org</em>, 2024. Acesso em: 25 mar. 2026.</li><li><strong>CLEVELAND CLINIC.</strong> Arterial Blood Gas (ABG). <em>my.clevelandclinic.org</em>, 2022. Acesso em: 25 mar. 2026.</li><li><strong>ROCA, O. et al.</strong> Predicting success of high-flow nasal cannula in pneumonia patients with hypoxemic respiratory failure: The utility of the ROX index. <em>J Crit Care</em>. 2016 Oct;35:200-5.</li><li><strong>ROCA, O. et al.</strong> An Index Combining Respiratory Rate and Oxygenation to Predict Outcome of Nasal High-Flow Therapy. <em>Am J Respir Crit Care Med</em>. 2019 Jun 1;199(11):1368-1376.</li><li><strong>FRANCIS, J.</strong> ROX index. <em>johnsonfrancis.org</em>, 2020. Disponível em: <a class="ref-link" href="https://johnsonfrancis.org/professional/rox-index/" target="_blank">https://johnsonfrancis.org/professional/rox-index/</a>. Acesso em: 25 mar. 2026.</li><li><strong>HOUSTON, J.L. et al.</strong> Safe blood cell counts for exercise in hematological malignancies. <em>Support Care Cancer</em>, 2025.</li><li><strong>LIMA, L.O. et al.</strong> Safety criteria to start early mobilization in intensive care units. <em>Rev Bras Ter Intensiva</em>, 2017.</li></ul><div class="badge-note">🔗 Sempre consulte as fontes originais. Novas referências são integradas neste bloco.</div></div></div>
+    <div id="content-refs" class="accordion-content"><div class="content-inner"><div class="section-title">📖 Citações completas – ABNT</div><ul class="ref-list"><li><strong>PEDSCASES.</strong> Pediatric Vital Signs Reference Chart. <em>PedsCases.com</em>, 2023. Acesso em: 25 mar. 2026.</li><li><strong>CLEVELAND CLINIC.</strong> Vital Signs. <em>my.clevelandclinic.org</em>, 2024.</li><li><strong>CLEVELAND CLINIC.</strong> Arterial Blood Gas (ABG). <em>my.clevelandclinic.org</em>, 2022.</li><li><strong>ROCA, O. et al.</strong> Predicting success of high-flow nasal cannula... <em>J Crit Care</em>. 2016.</li><li><strong>ROCA, O. et al.</strong> An Index Combining Respiratory Rate and Oxygenation... <em>Am J Respir Crit Care Med</em>. 2019.</li><li><strong>FRANCIS, J.</strong> ROX index. <em>johnsonfrancis.org</em>, 2020.</li><li><strong>HOUSTON, J.L. et al.</strong> Safe blood cell counts for exercise... <em>Support Care Cancer</em>, 2025.</li><li><strong>LIMA, L.O. et al.</strong> Safety criteria to start early mobilization... <em>Rev Bras Ter Intensiva</em>, 2017.</li></ul><div class="badge-note">🔗 Sempre consulte as fontes originais.</div></div></div>
 
-    <div class="footnote">🏥 App para fisioterapeutas e estagiários HUSE | Desenvolvido pela Equipe de Fisioterapia do HUSE.</div>
+    <div class="footnote">🏥 App para fisioterapeutas e estagiários HUSE |Desenvolvido pela Equipe de Fisioterapia do HUSE.</div>
 </div>
 
 <script>
@@ -472,52 +522,35 @@
         document.getElementById('calcAbgBtn')?.addEventListener('click', interpretarABG);
         interpretarABG();
 
-        // ROX CALCULATOR
-       function calcularROX() {
-    let spo2 = parseFloat(document.getElementById('rox_spo2').value);
-    let fio2_percent = parseFloat(document.getElementById('rox_fio2').value);
-    let fr = parseFloat(document.getElementById('rox_fr').value);
-    let tempo = parseInt(document.getElementById('rox_time').value);
-
-    if (isNaN(spo2) || isNaN(fio2_percent) || isNaN(fr) || fio2_percent === 0) return;
-
-    // Converte FiO₂ de porcentagem para fração (ex: 50% → 0.5)
-    let fio2 = fio2_percent / 100;
-    let ratio = spo2 / fio2;          // agora ratio ~ 94 / 0.5 = 188
-    let rox = ratio / fr;
-    rox = Math.round(rox * 100) / 100;
-
-    let corteFalha, corteSucesso;
-    if (tempo === 2) { corteFalha = 2.85; corteSucesso = 4.88; }
-    else if (tempo === 6) { corteFalha = 3.47; corteSucesso = 4.88; }
-    else { corteFalha = 3.85; corteSucesso = 4.88; }
-
-    let interpretacao = "";
-    let conduta = "";
-    if (rox >= corteSucesso) {
-        interpretacao = "✅ ALTO RISCO DE SUCESSO";
-        conduta = "Manter CNAF, monitorar evolução. Baixa probabilidade de intubação.";
-    } else if (rox <= corteFalha) {
-        interpretacao = "⚠️ ALTO RISCO DE FALÊNCIA";
-        conduta = "Considerar intensificar suporte, avaliar necessidade de VNI ou intubação. Reavaliar em 1-2 horas.";
-    } else {
-        interpretacao = "🟡 ZONA INTERMEDIÁRIA";
-        conduta = "Monitorar rigorosamente. Reavaliar ROX em 2-4 horas. Avaliar sinais de piora clínica.";
-    }
-
-    document.getElementById('roxResult').innerHTML = `Índice ROX (${tempo}h): ${rox} — ${interpretacao}`;
-    document.getElementById('roxInterpretation').innerHTML = `<strong>📋 Conduta sugerida:</strong> ${conduta}<br><strong>📊 Referência:</strong> Sucesso ≥ ${corteSucesso} | Falência ≤ ${corteFalha} (Roca et al.)`;
-}
-
-// Atribui eventos e executa inicialização
-document.getElementById('calcRoxBtn')?.addEventListener('click', calcularROX);
-calcularROX();
-
-// Recalcula automaticamente ao mudar qualquer campo
-['rox_spo2', 'rox_fio2', 'rox_fr', 'rox_time'].forEach(id => {
-    document.getElementById(id)?.addEventListener('input', calcularROX);
-    document.getElementById(id)?.addEventListener('change', calcularROX);
-});
+        // ROX CALCULATOR (CORRIGIDA)
+        function calcularROX() {
+            let spo2 = parseFloat(document.getElementById('rox_spo2').value);
+            let fio2_percent = parseFloat(document.getElementById('rox_fio2').value);
+            let fr = parseFloat(document.getElementById('rox_fr').value);
+            let tempo = parseInt(document.getElementById('rox_time').value);
+            if (isNaN(spo2) || isNaN(fio2_percent) || isNaN(fr) || fio2_percent === 0) return;
+            let fio2 = fio2_percent / 100;
+            let ratio = spo2 / fio2;
+            let rox = ratio / fr;
+            rox = Math.round(rox * 100) / 100;
+            let corteFalha, corteSucesso;
+            if (tempo === 2) { corteFalha = 2.85; corteSucesso = 4.88; }
+            else if (tempo === 6) { corteFalha = 3.47; corteSucesso = 4.88; }
+            else { corteFalha = 3.85; corteSucesso = 4.88; }
+            let interpretacao = "";
+            let conduta = "";
+            if (rox >= corteSucesso) { interpretacao = "✅ ALTO RISCO DE SUCESSO"; conduta = "Manter CNAF, monitorar evolução. Baixa probabilidade de intubação."; }
+            else if (rox <= corteFalha) { interpretacao = "⚠️ ALTO RISCO DE FALÊNCIA"; conduta = "Considerar intensificar suporte, avaliar necessidade de VNI ou intubação. Reavaliar em 1-2 horas."; }
+            else { interpretacao = "🟡 ZONA INTERMEDIÁRIA"; conduta = "Monitorar rigorosamente. Reavaliar ROX em 2-4 horas. Avaliar sinais de piora clínica."; }
+            document.getElementById('roxResult').innerHTML = `Índice ROX (${tempo}h): ${rox} — ${interpretacao}`;
+            document.getElementById('roxInterpretation').innerHTML = `<strong>📋 Conduta sugerida:</strong> ${conduta}<br><strong>📊 Referência:</strong> Sucesso ≥ ${corteSucesso} | Falência ≤ ${corteFalha} (Roca et al.)`;
+        }
+        document.getElementById('calcRoxBtn')?.addEventListener('click', calcularROX);
+        calcularROX();
+        ['rox_spo2', 'rox_fio2', 'rox_fr', 'rox_time'].forEach(id => {
+            document.getElementById(id)?.addEventListener('input', calcularROX);
+            document.getElementById(id)?.addEventListener('change', calcularROX);
+        });
     })();
 </script>
 </body>
