@@ -1,0 +1,581 @@
+t<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>VitalSigns Fisio - HUSE | VM + VNI + ABG</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(145deg, #eef2f5 0%, #dce3e9 100%);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 20px 16px 40px;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .hospital-header {
+            background: #003366;
+            padding: 22px 18px;
+            border-radius: 36px 36px 28px 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            text-align: center;
+        }
+
+        .hospital-header h1 {
+            color: white;
+            font-size: 1.65rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .hospital-header h1 span {
+            background: rgba(255,255,240,0.18);
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+        }
+
+        .sub {
+            color: #cce4ff;
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .accordion-btn {
+            width: 100%;
+            background: white;
+            border: none;
+            border-radius: 28px;
+            padding: 16px 24px;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            color: #003366;
+            border: 1px solid rgba(0, 51, 102, 0.2);
+        }
+
+        .accordion-btn:hover { background: #f0f7ff; transform: translateY(-1px); }
+        .accordion-btn:active { transform: scale(0.98); }
+        .accordion-btn.active {
+            background: #e6f0ff;
+            border-left: 6px solid #0088cc;
+            border-radius: 28px 28px 20px 20px;
+        }
+        .btn-icon {
+            font-size: 1.6rem;
+            transition: transform 0.2s;
+            color: #0077b6;
+        }
+
+        .accordion-content {
+            background: white;
+            border-radius: 28px;
+            margin-top: -8px;
+            margin-bottom: 18px;
+            padding: 0 4px 4px 4px;
+            display: none;
+            overflow-x: auto;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 51, 102, 0.15);
+        }
+
+        .content-inner {
+            padding: 20px 18px 24px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #003366;
+            margin: 18px 0 12px 0;
+            border-left: 5px solid #0088cc;
+            padding-left: 14px;
+        }
+        .section-title:first-of-type { margin-top: 0; }
+
+        .vital-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .vital-table th {
+            background-color: #003366;
+            color: white;
+            padding: 10px 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-align: center;
+            border: 1px solid #1a4d7a;
+        }
+        .vital-table td {
+            border: 1px solid #d4dee8;
+            padding: 10px 6px;
+            text-align: center;
+            background-color: #ffffff;
+        }
+        .vital-table tr:nth-child(even) td { background-color: #f9fbfe; }
+
+        .contra-indicacao {
+            background-color: #ffe6e6 !important;
+            color: #b00020;
+            font-weight: 500;
+        }
+        .absoluta {
+            background-color: #ffcccc;
+            font-weight: bold;
+            color: #a1001a;
+        }
+        .badge-note {
+            background: #eef2fc;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            padding: 4px 12px;
+            display: inline-block;
+            margin-top: 12px;
+            color: #005a8c;
+        }
+
+        .calc-card {
+            background: #f5f9fe;
+            border-radius: 24px;
+            padding: 16px;
+            margin: 18px 0 12px;
+            border: 1px solid #cbddee;
+        }
+        .calc-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+            margin-bottom: 12px;
+        }
+        .calc-field {
+            flex: 1;
+            min-width: 130px;
+        }
+        .calc-field label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #003366;
+            margin-bottom: 4px;
+        }
+        .calc-field input, .calc-field select {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 20px;
+            border: 1px solid #b9cef0;
+            font-size: 0.9rem;
+            background: white;
+        }
+        button.calc-btn {
+            background: #0088cc;
+            color: white;
+            border: none;
+            border-radius: 32px;
+            padding: 8px 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .result-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #003366;
+            background: #e9f0fa;
+            padding: 8px 12px;
+            border-radius: 28px;
+            margin-top: 10px;
+        }
+        .abg-analysis {
+            background: #eef2fc;
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 12px;
+            border-left: 6px solid #0088cc;
+        }
+
+        .ref-list {
+            list-style: none;
+            padding: 0;
+        }
+        .ref-list li {
+            background: #f4f9ff;
+            margin-bottom: 18px;
+            padding: 16px 18px;
+            border-radius: 24px;
+            border-left: 4px solid #0088cc;
+        }
+        .ref-link {
+            color: #0066a0;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .footnote {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 24px;
+            color: #4a627a;
+            background: rgba(0,51,102,0.05);
+            padding: 12px;
+            border-radius: 28px;
+        }
+        .table-wrapper { overflow-x: auto; }
+        @media (max-width: 550px) {
+            .accordion-btn { font-size: 1rem; padding: 12px 18px; }
+            .vital-table th, .vital-table td { font-size: 0.7rem; padding: 6px 3px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="hospital-header">
+        <h1>🩺 FisioVital <span>HUSE</span></h1>
+        <div class="sub">Manual de Ventilação & Gasometria</div>
+    </div>
+
+    <!-- BOTÃO 1: Sinais Vitais Ped -->
+    <button class="accordion-btn" data-target="content-ped"><span>👶 Sinais Vitais (Pediátrico)</span><span class="btn-icon">▼</span></button>
+    <div id="content-ped" class="accordion-content"><div class="content-inner"><div class="section-title">📊 Tabela Pediátrica</div><div class="table-wrapper"><table class="vital-table"><thead><tr><th>Faixa Etária</th><th>FC (bpm)</th><th>FR (irpm)</th><th>PAS (mmHg)</th><th>PAD (mmHg)</th></tr></thead><tbody><tr><td>Recém-nascido (0-28d)</td><td>100–205</td><td>30–60</td><td>67–84</td><td>35–53</td></tr><tr><td>Lactente (1-12m)</td><td>100–180</td><td>25–50</td><td>72–104</td><td>44–65</td></tr><tr><td>Pré-escolar (1-5a)</td><td>80–140</td><td>20–30</td><td>86–106</td><td>54–70</td></tr><tr><td>Escolar (6-12a)</td><td>70–115</td><td>16–22</td><td>94–122</td><td>58–78</td></tr><tr><td>Adolescente (13-18a)</td><td>60–100</td><td>12–20</td><td>100–132</td><td>64–82</td></tr></tbody></table></div><div class="badge-note">💡 SpO₂ ≥95% | Temperatura axilar 36,5–37,5°C. Fonte: pedscases.com</div></div></div>
+
+    <!-- BOTÃO 2: Sinais Vitais Adulto -->
+    <button class="accordion-btn" data-target="content-adult"><span>🧑 Sinais Vitais (Adulto)</span><span class="btn-icon">▼</span></button>
+    <div id="content-adult" class="accordion-content"><div class="content-inner"><div class="section-title">📋 Valores Adulto</div><div class="table-wrapper"><table class="vital-table"><thead><tr><th>Parâmetro</th><th>Faixa Normal</th><th>Observações</th></tr></thead><tbody><tr><td>Frequência Cardíaca</td><td>60–100 bpm</td><td>Bradicardia < 60 | Taquicardia > 100</td></tr><tr><td>Frequência Respiratória</td><td>12–18 irpm</td><td>>20 taquipneia</td></tr><tr><td>Pressão Arterial</td><td>Sistólica < 120, Diastólica < 80</td><td>Ótima <120/80 mmHg</td></tr><tr><td>Temperatura</td><td>36,5°C – 37,2°C</td><td>Oral/axilar</td></tr><tr><td>SpO₂</td><td>95% – 100%</td><td>ar ambiente</td></tr></tbody></table></div><div class="badge-note">📌 Cleveland Clinic + Diretrizes</div></div></div>
+
+    <!-- BOTÃO 3: VNI -->
+    <button class="accordion-btn" data-target="content-vni"><span>💨 Ventilação Não Invasiva (VNI)</span><span class="btn-icon">▼</span></button>
+    <div id="content-vni" class="accordion-content">
+        <div class="content-inner">
+            <div class="section-title">📌 Indicações e Contraindicações (VNI)</div>
+            <div class="table-wrapper">
+                <table class="vital-table">
+                    <thead><tr><th>Indicações principais</th><th>Contraindicações (VERMELHO = ABSOLUTAS)</th></tr></thead>
+                    <tbody>
+                        <tr><td>DPOC exacerbado com hipercapnia</td><td class="contra-indicacao absoluta">Parada cardiorrespiratória / instabilidade hemodinâmica</td></tr>
+                        <tr><td>Edema agudo de pulmão cardiogênico</td><td class="contra-indicacao absoluta">Falência de via aérea / rebaixamento grave (Glasgow < 8)</td></tr>
+                        <tr><td>Insuficiência respiratória hipercápnica</td><td class="contra-indicacao">Vômitos incoercíveis, sangramento GI ativo</td></tr>
+                        <tr><td>Hipoxemia refratária em imunocomprometidos</td><td class="contra-indicacao absoluta">Deformidade facial / trauma craniofacial grave</td></tr>
+                        <tr><td>Desmame de VM / pós-extubação</td><td class="contra-indicacao">Obstrução fixa de vias aéreas superiores</td></tr>
+                        <tr><td></td><td class="contra-indicacao">Pneumotórax não drenado (risco de tensionamento)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section-title">⚙️ Parâmetros Iniciais (BIPAP/CPAP)</div>
+            <div class="table-wrapper">
+                <table class="vital-table">
+                    <thead><tr><th>Modo</th><th>Configuração sugerida</th><th>Ajustes</th></tr></thead>
+                    <tbody>
+                        <tr><td>EPAP/IPAP (BIPAP)</td><td>EPAP: 4-6 cmH₂O | IPAP: 8-12 cmH₂O</td><td>↑ gradiente pressão para ↑ VC</td></tr>
+                        <tr><td>CPAP</td><td>5-10 cmH₂O (Edema agudo pulmonar)</td><td>Titular conforme SpO₂ >90%</td></tr>
+                        <tr><td>FiO₂</td><td>Iniciar 40-60%</td><td>Ajustar para SpO₂ 88-92% (DPOC) ou >94% (outros)</td></tr>
+                        <tr><td>Frequência de suporte</td><td>10-14 ipm (modo espontâneo/timed)</td><td>Evitar assincronia</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="section-title">🛑 Critérios de Interrupção / Falência da VNI</div>
+            <ul style="margin-left: 20px; margin-bottom: 12px;">
+                <li>Piora da gasometria: pH < 7,25 ou PaCO₂ aumentando >10 mmHg em 1h</li>
+                <li>Agitação psicomotora severa / rebaixamento nível consciência</li>
+                <li>Incapacidade de tolerar máscara ou vazamento >30%</li>
+                <li>Instabilidade hemodinâmica (PAS < 90 mmHg, uso de vasopressores)</li>
+                <li>Parada respiratória iminente → IOT imediata</li>
+            </ul>
+            <div class="section-title">📐 Calculadora HACOR (versão atualizada)</div>
+            <div class="calc-card">
+                <div class="calc-row">
+                    <div class="calc-field"><label>FC (bpm)</label><input type="number" id="hacor_fc" value="95" step="1"></div>
+                    <div class="calc-field"><label>pH</label><input type="number" id="hacor_ph" value="7.35" step="0.01"></div>
+                    <div class="calc-field"><label>Glasgow (GCS)</label><input type="number" id="hacor_gcs" value="15" step="1"></div>
+                    <div class="calc-field"><label>PaO₂/FiO₂</label><input type="number" id="hacor_pf" value="201" step="5"></div>
+                    <div class="calc-field"><label>FR (irpm)</label><input type="number" id="hacor_fr" value="12" step="1"></div>
+                </div>
+                <button class="calc-btn" id="calcHacorBtn">Calcular escore HACOR</button>
+                <div id="hacorResult" class="result-value">Pontuação HACOR: -- (risco de falência)</div>
+                <div class="badge-note">📊 Escore HACOR conforme modelo validado: ≥5 → alto risco de falência da VNI nas primeiras horas. Fonte: European Respiratory Journal, 2024.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTÃO 4: Ventilação Mecânica Invasiva (VM) -->
+    <button class="accordion-btn" data-target="content-vm"><span>🫁 Ventilação Mecânica (VM)</span><span class="btn-icon">▼</span></button>
+    <div id="content-vm" class="accordion-content">
+        <div class="content-inner">
+            <div class="section-title">⚕️ Parâmetros Iniciais (Modo VC/PC)</div>
+            <div class="table-wrapper"><table class="vital-table"><thead><tr><th>Parâmetro</th><th>Configuração Inicial (Base StatPearls 2024)</th><th>Observação</th></tr></thead><tbody>
+                <tr><td>Volume Corrente (VC)</td><td>6-8 mL/kg Peso Ideal</td><td>SDRA: 4-6 mL/kg, manter Platô <30 cmH₂O</td></tr>
+                <tr><td>Frequência Respiratória</td><td>12-16 ipm</td><td>Ajustar para manter pH >7,20 e PaCO₂ alvo</td></tr>
+                <tr><td>PEEP</td><td>5-8 cmH₂O</td><td>Titular conforme tabela ARDSnet ou oxigenação</td></tr>
+                <tr><td>FiO₂</td><td>40-60%</td><td>Manter SpO₂ 88-95% (evitar hiperóxia)</td></tr>
+                <tr><td>Fluxo inspiratório</td><td>40-60 L/min</td><td>Aumentar se I:E >1:3 em doença obstrutiva</td></tr>
+                <tr><td>Pressão de platô</td><td>< 30 cmH₂O</td><td>Obrigatório em proteção pulmonar</td></tr>
+            </tbody></table></div>
+            <div class="section-title">📐 Calculadora de Volume Corrente Ideal (Peso Ideal)</div>
+            <div class="calc-card"><div class="calc-row"><div class="calc-field"><label>Sexo</label><select id="sexo"><option value="M">Masculino</option><option value="F">Feminino</option></select></div><div class="calc-field"><label>Altura (cm)</label><input type="number" id="altura" value="170" step="1"></div><div class="calc-field"><label>mL/kg alvo (proteção)</label><select id="mlPorKg"><option value="6">6 mL/kg (SDRA)</option><option value="7">7 mL/kg</option><option value="8" selected>8 mL/kg (padrão)</option></select></div></div><button class="calc-btn" id="calcVtBtn">Calcular Volume Corrente</button><div id="vtResult" class="result-value">Peso Ideal: -- kg | VC alvo: -- mL</div><div class="badge-note">📌 Fórmula: Homem = 50 + 0.91*(altura-152.4); Mulher = 45.5 + 0.91*(altura-152.4). VC = Peso Ideal × mL/kg.</div></div>
+            <div class="section-title">⚠️ Tabela de Valores Limite / Alertas (Proteção Pulmonar)</div>
+            <div class="table-wrapper"><table class="vital-table"><thead><tr><th>Parâmetro</th><th>Valor Seguro</th><th>Zona de Risco / Intervenção</th></tr></thead><tbody>
+                <tr><td>Pressão de Platô</td><td>< 30 cmH₂O</td><td>> 30 → reduzir VC ou PEEP, risco barotrauma</td></tr>
+                <tr><td>Driving Pressure (ΔP)</td><td>< 14 cmH₂O</td><td>> 15 ↑ mortalidade em SDRA</td></tr>
+                <tr><td>PEEP</td><td>5-15 conforme FiO₂</td><td>PEEP elevada >15 sem monitorização de driving pressure</td></tr>
+                <tr><td>Frequência Respiratória</td><td>< 35 ipm</td><td>> 35 risco de auto-PEEP e hiperinsuflação dinâmica</td></tr>
+                <tr><td>Volume Corrente (protegido)</td><td>4-8 mL/kg Peso Ideal</td><td>> 8 mL/kg associado a lesão pulmonar (exceto neurolesados)</td></tr>
+            </tbody></table></div>
+            <div class="badge-note">🩺 Referências: StatPearls [Internet] 2024; ARDSnet protocol; driving pressure (Amato et al. NEJM 2015).</div>
+        </div>
+    </div>
+
+    <!-- BOTÃO 5: GASOMETRIA ARTERIAL (NOVO) -->
+    <button class="accordion-btn" data-target="content-abg"><span>🩸 Gasometria Arterial (ABG)</span><span class="btn-icon">▼</span></button>
+    <div id="content-abg" class="accordion-content">
+        <div class="content-inner">
+            <div class="section-title">📋 Valores de Referência (Cleveland Clinic)</div>
+            <div class="table-wrapper">
+                <table class="vital-table">
+                    <thead><tr><th>Parâmetro</th><th>Valor Normal (nível do mar)</th><th>Unidade</th></tr></thead>
+                    <tbody>
+                        <tr><td>pH</td><td>7,35 – 7,45</td><td>-</td></tr>
+                        <tr><td>PaO₂ (Pressão parcial de oxigênio)</td><td>75 – 100</td><td>mmHg</td></tr>
+                        <tr><td>PaCO₂ (Pressão parcial de gás carbônico)</td><td>35 – 45</td><td>mmHg</td></tr>
+                        <tr><td>HCO₃⁻ (Bicarbonato)</td><td>22 – 26</td><td>mEq/L</td></tr>
+                        <tr><td>SatO₂ (Saturação de O₂)</td><td>95 – 100</td><td>%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="badge-note">📌 Valores de referência para adultos em repouso, ao nível do mar. Em altitudes >900m, o PaO₂ esperado é menor.</div>
+
+            <div class="section-title">🔍 Análise Rápida da Gasometria</div>
+            <div class="calc-card">
+                <div class="calc-row">
+                    <div class="calc-field"><label>pH</label><input type="number" id="abg_ph" value="7.40" step="0.01"></div>
+                    <div class="calc-field"><label>PaCO₂ (mmHg)</label><input type="number" id="abg_paco2" value="40" step="1"></div>
+                    <div class="calc-field"><label>HCO₃⁻ (mEq/L)</label><input type="number" id="abg_hco3" value="24" step="1"></div>
+                    <div class="calc-field"><label>PaO₂ (mmHg)</label><input type="number" id="abg_pao2" value="85" step="1"></div>
+                </div>
+                <button class="calc-btn" id="calcAbgBtn">Interpretar Gasometria</button>
+                <div id="abgResult" class="result-value">Preencha os valores e clique em interpretar.</div>
+                <div class="abg-analysis" id="abgDetailed"></div>
+            </div>
+            <div class="badge-note">🩺 Interpretação baseada na abordagem clássica: avaliação do pH (acidemia/alcalemia), componente respiratório (PaCO₂) e metabólico (HCO₃⁻). Oxigenação avaliada pela PaO₂ e SatO₂.</div>
+        </div>
+    </div>
+
+    <!-- BOTÃO 6: Referências ABNT (sempre último) -->
+    <button class="accordion-btn" data-target="content-refs"><span>📚 Referências Bibliográficas (ABNT)</span><span class="btn-icon">▼</span></button>
+    <div id="content-refs" class="accordion-content">
+        <div class="content-inner">
+            <div class="section-title">📖 Citações completas – ABNT</div>
+            <ul class="ref-list">
+                <li><strong>PEDSCASES.</strong> Pediatric Vital Signs Reference Chart. <em>PedsCases.com</em>, 2023. Disponível em: <a class="ref-link" href="https://www.pedscases.com/pediatric-vital-signs-reference-chart" target="_blank">https://www.pedscases.com/pediatric-vital-signs-reference-chart</a>. Acesso em: 25 mar. 2026.</li>
+                <li><strong>CLEVELAND CLINIC.</strong> Vital Signs: Understanding What the Body Is Telling You. <em>my.clevelandclinic.org</em>, 2024. Disponível em: <a class="ref-link" href="https://my.clevelandclinic.org/health/articles/10881-vital-signs" target="_blank">https://my.clevelandclinic.org/health/articles/10881-vital-signs</a>. Acesso em: 25 mar. 2026.</li>
+                <li><strong>CLEVELAND CLINIC.</strong> Arterial Blood Gas (ABG): What It Is, Purpose, Procedure & Levels. <em>my.clevelandclinic.org</em>, 2022. Disponível em: <a class="ref-link" href="https://my.clevelandclinic.org/health/diagnostics/22409-arterial-blood-gas-abg" target="_blank">https://my.clevelandclinic.org/health/diagnostics/22409-arterial-blood-gas-abg</a>. Acesso em: 25 mar. 2026.</li>
+                <li><strong>NAVAS, A. et al.</strong> Noninvasive ventilation in acute respiratory failure. <em>European Respiratory Journal</em>, 2024; 64(5): 2400396. Disponível em: <a class="ref-link" href="https://publications.ersnet.org/content/erj/64/5/2400396" target="_blank">https://publications.ersnet.org/content/erj/64/5/2400396</a>. Acesso em: 25 mar. 2026.</li>
+                <li><strong>HICKEY, S.M.; SANKARI, A.; GIWA, A.O.</strong> Mechanical Ventilation. In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2024. Disponível em: <a class="ref-link" href="https://www.ncbi.nlm.nih.gov/books/NBK539742/" target="_blank">https://www.ncbi.nlm.nih.gov/books/NBK539742/</a>. Acesso em: 25 mar. 2026.</li>
+            </ul>
+            <div class="badge-note">🔗 Sempre consulte as fontes originais. Novas referências são integradas neste bloco.</div>
+        </div>
+    </div>
+
+    <div class="footnote">🏥 App para fisioterapeutas e estagiários HUSE | Dados baseados em evidências atuais | VNI + VM + ABG com calculadoras integradas.</div>
+</div>
+
+<script>
+    (function() {
+        const buttons = document.querySelectorAll('.accordion-btn');
+        const contents = document.querySelectorAll('.accordion-content');
+
+        function closeAllContents() {
+            contents.forEach(content => content.style.display = 'none');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                const iconSpan = btn.querySelector('.btn-icon');
+                if (iconSpan) iconSpan.style.transform = 'rotate(0deg)';
+            });
+        }
+        function openContent(contentId) {
+            const targetContent = document.getElementById(contentId);
+            if (!targetContent) return;
+            targetContent.style.display = 'block';
+            const correspondingBtn = Array.from(buttons).find(btn => btn.getAttribute('data-target') === contentId);
+            if (correspondingBtn) {
+                correspondingBtn.classList.add('active');
+                const icon = correspondingBtn.querySelector('.btn-icon');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            }
+        }
+        function isContentVisible(contentId) {
+            const cont = document.getElementById(contentId);
+            return cont && cont.style.display === 'block';
+        }
+        function handleButtonClick(event) {
+            const button = event.currentTarget;
+            const targetId = button.getAttribute('data-target');
+            if (isContentVisible(targetId)) {
+                const targetContent = document.getElementById(targetId);
+                if (targetContent) targetContent.style.display = 'none';
+                button.classList.remove('active');
+                const iconSpan = button.querySelector('.btn-icon');
+                if (iconSpan) iconSpan.style.transform = 'rotate(0deg)';
+                return;
+            }
+            closeAllContents();
+            openContent(targetId);
+        }
+        closeAllContents();
+        buttons.forEach(btn => btn.addEventListener('click', handleButtonClick));
+
+        // HACOR calculadora
+        function calcularHACOR() {
+            let fc = parseFloat(document.getElementById('hacor_fc').value);
+            let ph = parseFloat(document.getElementById('hacor_ph').value);
+            let gcs = parseFloat(document.getElementById('hacor_gcs').value);
+            let pf = parseFloat(document.getElementById('hacor_pf').value);
+            let fr = parseFloat(document.getElementById('hacor_fr').value);
+            if (isNaN(fc)) fc = 95; if (isNaN(ph)) ph = 7.35; if(isNaN(gcs)) gcs=15; if(isNaN(pf)) pf=201; if(isNaN(fr)) fr=12;
+            let score = 0;
+            if (fc >= 121) score += 1;
+            if (ph < 7.25) score += 4;
+            else if (ph >= 7.25 && ph <= 7.29) score += 3;
+            else if (ph >= 7.30 && ph <= 7.34) score += 2;
+            if (gcs <= 10) score += 10;
+            else if (gcs >= 11 && gcs <= 12) score += 5;
+            else if (gcs >= 13 && gcs <= 14) score += 2;
+            if (pf <= 100) score += 6;
+            else if (pf >= 101 && pf <= 125) score += 5;
+            else if (pf >= 126 && pf <= 150) score += 4;
+            else if (pf >= 151 && pf <= 175) score += 3;
+            else if (pf >= 176 && pf <= 200) score += 2;
+            if (fr >= 46) score += 4;
+            else if (fr >= 41 && fr <= 45) score += 3;
+            else if (fr >= 36 && fr <= 40) score += 2;
+            else if (fr >= 31 && fr <= 35) score += 1;
+            let risco = score >= 5 ? "⚠️ ALTO RISCO de falência da VNI (escore ≥5) – considerar intubação precoce" : "✅ BAIXO RISCO (<5) – manter monitorização rigorosa, VNI provavelmente eficaz";
+            document.getElementById('hacorResult').innerHTML = `Escore HACOR: ${score} pontos — ${risco}`;
+        }
+        document.getElementById('calcHacorBtn')?.addEventListener('click', calcularHACOR);
+        calcularHACOR();
+
+        // Calculadora Volume Corrente
+        function calcularVt() {
+            let sexo = document.getElementById('sexo').value;
+            let alturaCm = parseFloat(document.getElementById('altura').value);
+            let mlKg = parseFloat(document.getElementById('mlPorKg').value);
+            if (isNaN(alturaCm) || alturaCm < 100) alturaCm = 170;
+            let pesoIdeal = (sexo === 'M') ? 50 + 0.91 * (alturaCm - 152.4) : 45.5 + 0.91 * (alturaCm - 152.4);
+            if (pesoIdeal < 40) pesoIdeal = 40;
+            let vcMl = pesoIdeal * mlKg;
+            document.getElementById('vtResult').innerHTML = `Peso Ideal: ${pesoIdeal.toFixed(1)} kg | VC alvo: ${Math.round(vcMl)} mL (${mlKg} mL/kg)`;
+        }
+        document.getElementById('calcVtBtn')?.addEventListener('click', calcularVt);
+        calcularVt();
+
+        // INTERPRETAÇÃO DA GASOMETRIA
+        function interpretarABG() {
+            let pH = parseFloat(document.getElementById('abg_ph').value);
+            let pCO2 = parseFloat(document.getElementById('abg_paco2').value);
+            let hco3 = parseFloat(document.getElementById('abg_hco3').value);
+            let paO2 = parseFloat(document.getElementById('abg_pao2').value);
+            
+            if (isNaN(pH) || isNaN(pCO2) || isNaN(hco3) || isNaN(paO2)) {
+                document.getElementById('abgResult').innerHTML = "❌ Preencha todos os campos numéricos corretamente.";
+                document.getElementById('abgDetailed').innerHTML = "";
+                return;
+            }
+
+            // 1. Avaliação da oxigenação
+            let oxigenacao = "";
+            if (paO2 >= 75) oxigenacao = "✅ PaO₂ normal (>75 mmHg).";
+            else if (paO2 >= 60) oxigenacao = "⚠️ Hipoxemia leve (PaO₂ 60-74 mmHg).";
+            else if (paO2 >= 40) oxigenacao = "⚠️⚠️ Hipoxemia moderada (PaO₂ 40-59 mmHg).";
+            else oxigenacao = "🔴 Hipoxemia grave (PaO₂ < 40 mmHg). Risco de falência respiratória.";
+
+            // 2. Distúrbio ácido-base
+            let acidBase = "";
+            let compensacao = "";
+            let disturbio = "";
+            
+            // Acidemia ou Alcalemia?
+            if (pH < 7.35) {
+                acidBase = "ACIDEMIA (pH < 7,35)";
+                // Distúrbio primário: comparar PaCO2 e HCO3
+                if (pCO2 > 45 && hco3 >= 22) {
+                    disturbio = "Acidose respiratória aguda (PaCO₂ elevada).";
+                    compensacao = "Compensação metabólica ausente/inicial (HCO₃⁻ normal).";
+                    if (hco3 > 26) compensacao = "Compensação metabólica parcial (HCO₃⁻ elevado, crônico).";
+                } else if (hco3 < 22 && pCO2 <= 40) {
+                    disturbio = "Acidose metabólica (HCO₃⁻ reduzido).";
+                    compensacao = (pCO2 < 35) ? "Compensação respiratória presente (PaCO₂ baixa)." : "Sem compensação respiratória adequada.";
+                } else if (pCO2 > 45 && hco3 < 22) {
+                    disturbio = "Distúrbio misto: acidose respiratória + acidose metabólica.";
+                    compensacao = "pH gravemente reduzido, avaliar causas associadas.";
+                } else if (hco3 > 26 && pCO2 > 45) {
+                    disturbio = "Acidose respiratória crônica com compensação metabólica (HCO₃⁻ elevado).";
+                    compensacao = "Distúrbio compensado (pH próximo ao normal se crônico).";
+                } else disturbio = "Acidose não classificada, revisar valores.";
+            } 
+            else if (pH > 7.45) {
+                acidBase = "ALCALEMIA (pH > 7,45)";
+                if (pCO2 < 35 && hco3 <= 26) {
+                    disturbio = "Alcalose respiratória aguda (PaCO₂ baixa).";
+                    compensacao = "HCO₃⁻ normal ou levemente reduzido (compensação aguda).";
+                } else if (hco3 > 26 && pCO2 >= 40) {
+                    disturbio = "Alcalose metabólica (HCO₃⁻ elevado).";
+                    compensacao = (pCO2 > 45) ? "Compensação respiratória (retenção de CO₂)." : "Sem compensação adequada.";
+                } else if (pCO2 < 35 && hco3 > 26) {
+                    disturbio = "Alcalose mista: respiratória + metabólica.";
+                    compensacao = "pH muito elevado, risco de tetania/convulsões.";
+                } else disturbio = "Alcalose não classificada.";
+            } 
+            else {
+                acidBase = "pH dentro da faixa normal (7,35-7,45).";
+                if (pCO2 > 45 && hco3 > 26) {
+                    disturbio = "Possível acidose respiratória crônica compensada.";
+                    compensacao = "Distúrbio compensado, avaliar história clínica.";
+                } else if (pCO2 < 35 && hco3 < 22) {
+                    disturbio = "Possível alcalose respiratória crônica compensada.";
+                    compensacao = "Distúrbio compensado, monitorar gasometria seriada.";
+                } else if (hco3 < 22 && pCO2 < 35) {
+                    disturbio = "Acidose metabólica com compensação respiratória total (pH normalizado).";
+                    compensacao = "Resposta adequada, avaliar ânion gap.";
+                } else if (hco3 > 26 && pCO2 > 45) {
+                    disturbio = "Alcalose metabólica com compensação respiratória total.";
+                    compensacao = "Compensação adequada.";
+                } else {
+                    disturbio = "Gasometria normal ou distúrbios compensados sem alteração do pH.";
+                    compensacao = "Considere contexto clínico e ânion gap se suspeita de acidose metabólica.";
+                }
+            }
+            
+            document.getElementById('abgResult').innerHTML = `🔬 Análise: ${acidBase}<br>📌 ${disturbio}<br>🔄 ${compensacao}<br>🫁 ${oxigenacao}`;
+            document.getElementById('abgDetailed').innerHTML = `<strong>💡 Interpretação adicional:</strong> pH = ${pH.toFixed(2)} | PaCO₂ = ${pCO2} mmHg | HCO₃⁻ = ${hco3} mEq/L | PaO₂ = ${paO2} mmHg.<br>➡️ Recomendação: correlacionar com quadro clínico e eletrólitos. Em acidose metabólica, calcule o ânion gap (Na - Cl - HCO₃).`;
+        }
+        
+        document.getElementById('calcAbgBtn')?.addEventListener('click', interpretarABG);
+        interpretarABG(); // inicializa com valores padrão
+    })();
+</script>
+</body>
+</html>
