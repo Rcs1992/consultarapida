@@ -550,7 +550,7 @@
     <div id="content-ped" class="accordion-content"><div class="content-inner"><div class="section-title">📊 Tabela Pediátrica</div><div class="table-wrapper"><table class="vital-table"><thead><th>Faixa Etária</th><th>FC (bpm)</th><th>FR (irpm)</th><th>PAS (mmHg)</th><th>PAD (mmHg)</th></tr></thead><tbody><tr><td>Recém-nascido (0-28d)</td><td>100–205</td><td>30–60</td><td>67–84</td><td>35–53</td></tr><tr><td>Lactente (1-12m)</td><td>100–180</td><td>25–50</td><td>72–104</td><td>44–65</td></tr><tr><td>Pré-escolar (1-5a)</td><td>80–140</td><td>20–30</td><td>86–106</td><td>54–70</td></tr><tr><td>Escolar (6-12a)</td><td>70–115</td><td>16–22</td><td>94–122</td><td>58–78</td></tr><tr><td>Adolescente (13-18a)</td><td>60–100</td><td>12–20</td><td>100–132</td><td>64–82</td></tr></tbody></table></div><div class="badge-note">💡 SpO₂ ≥95% | Temperatura axilar 36,5–37,5°C. Fonte: <a href="https://www.pedscases.com/pediatric-vital-signs-reference-chart" target="_blank">PedsCases.com</a></div></div></div>
 
 	
-    <!-- BOTÃO: DROGAS VASOATIVAS E INFUSÕES COMUNS -->
+<!-- BOTÃO: DROGAS VASOATIVAS E INFUSÕES COMUNS -->
 <button class="accordion-btn" data-target="content-drogas">
     <span>💉 Drogas Vasoativas e Infusões Comuns (UTI)</span>
     <span class="btn-icon">▼</span>
@@ -713,6 +713,118 @@
     </div>
 
 	<!-- ... conteúdo anterior (Mobilização Precoce) ... -->
+
+<!-- BOTÃO: REABILITAÇÃO CARDÍACA HOSPITALAR -->
+<button class="accordion-btn" data-target="content-cardiac">
+    <span>❤️ Reabilitação Cardíaca Hospitalar</span>
+    <span class="btn-icon">▼</span>
+</button>
+<div id="content-cardiac" class="accordion-content">
+    <div class="content-inner">
+        <div class="section-title">📌 Critérios de Segurança para Mobilização</div>
+        <div class="badge-note">📄 Fonte: Brigham and Women's Hospital, Department of Rehabilitation Services. Standard of Care: Cardiac. 2019.</div>
+
+        <div class="section-title">⚠️ Contraindicações Absolutas para Mobilização</div>
+        <ul style="margin-left: 20px; margin-bottom: 16px;">
+            <li><strong>Instabilidade hemodinâmica</strong> – PAS < 90 mmHg ou necessidade de vasopressores em doses crescentes</li>
+            <li><strong>Arritmias não controladas</strong> – TV sustentada, FA com resposta ventricular rápida (>120 bpm) não controlada</li>
+            <li><strong>Isquemia ativa</strong> – Angina instável ou alterações isquêmicas no ECG</li>
+            <li><strong>Miocárdio agudo</strong> – Paciente em “ruling out” para IAM (aguardar 3 conjuntos de enzimas e estabilização)</li>
+            <li><strong>Hipotensão ortostática sintomática</strong> – Queda da PAS > 20 mmHg com tontura ou náusea</li>
+            <li><strong>Hipoxemia grave</strong> – SpO₂ < 88% mesmo com O₂ suplementar (ou < 90% em cardiopatas)</li>
+        </ul>
+
+        <div class="section-title">⚠️ Precauções e Limitações Específicas</div>
+        <div class="table-wrapper">
+            <table class="vital-table">
+                <thead><th>Condição / Procedimento</th><th>Precaução / Recomendação</th></thead>
+                <tbody>
+                    <tr><td rowspan="2"><strong>Pós-operatório de cirurgia cardíaca (esternotomia)</strong></td>
+                        <td><strong>Precauções esternais por 12 semanas:</strong> não levantar > 5 kg, evitar empurrar/puxar excessivo, evitar torção de tronco, log roll para sair do leito, usar travesseiro para tossir/espirrar. <em>Literatura atual sugere que restrições excessivas podem piorar desfechos funcionais</em>.</td>
+                     </tr>
+                     <tr><td><strong>Pacientes com múltiplos fatores de risco para deiscência esternal:</strong> uso de artéria mamária interna, obesidade mórbida, DM mal controlado, osteoporose, reoperação. Seguir precauções rigorosamente.</td>
+                     </tr>
+                    <tr><td><strong>Cateterismo cardíaco (via femoral)</strong></td>
+                        <td>Repouso no leito com perna estendida por 6‑8 horas. Verificar ausência de hematoma ou dor antes de mobilizar.</td>
+                     </tr>
+                    <tr><td><strong>Marca‑passo definitivo (PPM) / CDI</strong></td>
+                        <td>Membro superior ipsilateral: sem elevação > 90° ou exercício terapêutico por 4‑6 semanas. Uso funcional permitido, sem carga > 2‑5 kg.</td>
+                     </tr>
+                    <tr><td><strong>Dispositivo de assistência ventricular (Impella femoral / IABP)</strong></td>
+                        <td>Geralmente restrito ao leito. Se permitido, evitar flexão do quadril > 70° no lado da cannulação.</td>
+                     </tr>
+                    <tr><td><strong>Cateter de artéria pulmonar (Swan‑Ganz)</strong></td>
+                        <td>Mobilização permitida com orientação da equipe. Evitar elevação do ombro ipsilateral > 90° se o cateter estiver fixado nesse lado.</td>
+                     </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title">🩺 Avaliação da Tolerância ao Exercício</div>
+        <div class="table-wrapper">
+            <table class="vital-table">
+                <thead><th>Teste</th><th>Descrição</th><th>Interpretação Clínica</th></thead>
+                <tbody>
+                    <tr><td><strong>Teste de Caminhada de 6 Minutos (6MWT)</strong></td>
+                        <td>Padronizado, paciente auto‑paced. Registrar distância (metros), SpO₂, FC, RPE (Borg 0‑10) a cada 2 min, PA pré e pós.</td>
+                        <td><strong>Distância normal prevista</strong> (Gibbons et al.): para idade e sexo (calculadora automática disponível em Excel).<br>
+                        <strong>Em ICC:</strong> < 300 m → maior mortalidade. < 536 pés (≈163 m) → maior risco de readmissão em 30 dias.<br>
+                        <strong>Em DPOC:</strong> correlaciona com qualidade de vida e prognóstico.</td>
+                     </tr>
+                    <tr><td><strong>Teste de Caminhada de 2 Minutos (2MWT)</strong></td>
+                        <td>Alternativa para pacientes com baixa resistência. Normas por idade e sexo (Bohannon et al.).</td>
+                        <td>Fornece ponto de partida para prescrição de exercícios intervalados.</td>
+                     </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title">📊 Escala de Esforço Percebido de Borg (0‑10) – Modificada</div>
+        <div class="calc-card">
+            <div class="calc-row">
+                <div class="calc-field"><label>Percepção subjetiva do paciente (0 a 10)</label><input type="range" id="borgSlider" min="0" max="10" step="0.5" value="3"><span id="borgValueDisplay" style="margin-left: 10px; font-weight: bold;">3</span></div>
+            </div>
+            <div id="borgInterpretation" class="result-value">Nível leve a moderado – adequado para início de exercício.</div>
+            <div class="badge-note">📌 <strong>Alvo para exercício aeróbico:</strong> 3‑5/10 (leve a moderado). Para pacientes descondicionados ou pós‑evento agudo, iniciar com 2‑3/10 e progredir.</div>
+        </div>
+
+        <div class="section-title">📝 Prescrição de Exercício para Paciente Cardiológico (fase hospitalar)</div>
+        <div class="table-wrapper">
+            <table class="vital-table">
+                <thead><th>Componente</th><th>Recomendação Inicial</th><th>Progressão</th></thead>
+                <tbody>
+                    <tr><td><strong>Modo</strong></td>
+                        <td>Caminhada (principal); bicicleta estacionária ou restorator se disponível</td>
+                        <td>Aumentar gradualmente o tempo antes de aumentar a intensidade</td>
+                     </tr>
+                    <tr><td><strong>Intensidade</strong></td>
+                        <td>RPE 3‑5/10 (Borg); se HR disponível, 40‑60% da FC de reserva (ou 20‑30 bpm acima da repouso, se em uso de betabloqueador)</td>
+                        <td>Após 1‑2 semanas de tolerância, progredir para RPE 4‑6/10</td>
+                     </tr>
+                    <tr><td><strong>Duração</strong></td>
+                        <td>Intervalos de 3‑5 min de exercício + 1‑3 min de descanso, totalizando 10‑20 min por sessão</td>
+                        <td>Aumentar a duração do intervalo (ex.: 7‑15 min com 2‑5 min de descanso) e depois o tempo total (15‑30 min)</td>
+                     </tr>
+                    <tr><td><strong>Frequência</strong></td>
+                        <td>2‑4 sessões/dia, 5‑7 dias/semana</td>
+                        <td>Consolidar 3‑4 sessões/dia</td>
+                     </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section-title">🔄 Recomendações de Alta e Encaminhamento</div>
+        <ul style="margin-left: 20px; margin-bottom: 16px;">
+            <li><strong>Encaminhar para Reabilitação Cardíaca ambulatorial</strong> antes da alta, sempre que indicado (IAM, CRM, valvoplastia, IC com FE < 35%, transplante).</li>
+            <li><strong>Fornecer prescrição de exercício domiciliar</strong> baseada nos resultados do 6MWT (ex.: caminhar em casa com RPE 3‑5/10, em intervalos, evitando piora dos sintomas).</li>
+            <li><strong>Educar sobre sinais de alerta</strong> (dor torácica, tontura, dispneia excessiva, palpitações) e quando parar a atividade.</li>
+            <li><strong>Verificar contraindicações para direção</strong> pós‑cirurgia (não dirigir por 3‑4 semanas se houver risco de síncope ou se ainda em uso de opioides).</li>
+        </ul>
+
+        <div class="badge-note">📌 <strong>Medicamentos de interesse (impacto na resposta ao exercício):</strong> Betabloqueadores reduzem a FC de pico – usar RPE como guia principal. Nitratos e diuréticos podem causar hipotensão postural. Anticoagulantes aumentam risco de sangramento em quedas – cuidado com equilíbrio.</div>
+    </div>
+</div>
+	
 
 <!-- BOTÃO: PROTOCOLO BRASILEIRO DE FISIOTERAPIA NO AVC -->
 <button class="accordion-btn" data-target="content-avc">
@@ -1063,6 +1175,7 @@
 		<li><strong>BARNEY, P.</strong> MICU/CCU Drips. In: <em>VIM Book – Vanderbilt Internal Medicine</em>, 2025. Disponível em: <a class="ref-link" href="https://vim-book.org/critical-care/critical-care-drips/" target="_blank">https://vim-book.org/critical-care/critical-care-drips/</a>. Acesso em: 27 mar. 2026.</li>
 		<li><strong>PLATER, J. C.; BAXTER, G. D.; WOOD, L. C.; MUELLER, J.; FISHER, T.</strong> Development of evidence-based standards for inpatient physiotherapy services: a systematic review and content analysis of clinical practice guidelines. <em>BMJ Open</em>, v. 14, n. 12, p. e088692, 2024. doi: <a class="ref-link" href="https://doi.org/10.1136/bmjopen-2024-088692" target="_blank">10.1136/bmjopen-2024-088692</a>. Disponível em: <a class="ref-link" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11667250/" target="_blank">https://pmc.ncbi.nlm.nih.gov/articles/PMC11667250/</a>. Acesso em: 28 mar. 2026.</li>
 		<li><strong>MASO, I.; LUVIZUTTO, G. J.; MIRANDA, J. M. A.; NASCIMENTO, C. F.; BONOME, L. A. M.; PINTO, E. B.; KLITZKE, F. M.; SOUZA, R. M.; MORO, C. H. C.; BAZAN, R.; JESUS, P. A. P.; ROCHA, E. M. C.; MINELLI, C.; MARTINS, S. O.; BAGGIO, J. A. O.</strong> Protocolo Brasileiro de Fisioterapia Precoce para Pacientes após AVC no Ambiente Hospitalar: Consenso de Especialistas da Força Tarefa Brasil de Reabilitação do AVC. <em>Arquivos de Neuro-Psiquiatria</em>, 2025. Endossado pela Academia Brasileira de Neurologia (ABN) e Associação Brasileira de Fisioterapia Neurofuncional (ABRAFIN). Material suplementar. Disponível em: <a class="ref-link" href="https://www.arquivosdeneuropsiquiatria.org/wp-content/uploads/2025/02/ANP-2024.0096-Supplementary-Material-2.pdf" target="_blank">https://www.arquivosdeneuropsiquiatria.org/wp-content/uploads/2025/02/ANP-2024.0096-Supplementary-Material-2.pdf</a>. Acesso em: 28 mar. 2026.</li>
+		<li><strong>BRIGHAM AND WOMEN'S HOSPITAL, Department of Rehabilitation Services.</strong> Standard of Care: Cardiac – Inpatient Physical Therapy Management of the Surgical and Non‑Surgical Patient with Cardiac Disease. Boston, 2019. Disponível em: <a class="ref-link" href="https://www.brighamandwomens.org/assets/bwh/patients-and-families/rehabilitation-services/pdfs/cardiac-soc-bwh.pdf" target="_blank">https://www.brighamandwomens.org/assets/bwh/patients-and-families/rehabilitation-services/pdfs/cardiac-soc-bwh.pdf</a>. Acesso em: 28 mar. 2026.</li>
 	</ul><div class="badge-note">🔗 Todas as referências foram validadas com links de acesso direto e/ou DOI.</div></div></div>
 
     <div class="footnote">🏥 App para fisioterapeutas e estagiários HUSE | Baseado em evidências e diretrizes oficiais | Desenvolvido pela Equipe de Fisioterapia do HUSE.</div>
@@ -1186,6 +1299,23 @@
         document.getElementById('calcAbgBtn')?.addEventListener('click', interpretarABG);
         interpretarABG();
 
+		// Escala de Borg interativa
+const borgSlider = document.getElementById('borgSlider');
+const borgDisplay = document.getElementById('borgValueDisplay');
+const borgInterpret = document.getElementById('borgInterpretation');
+if (borgSlider) {
+    function updateBorg() {
+        let val = parseFloat(borgSlider.value);
+        borgDisplay.innerText = val;
+        if (val <= 2) borgInterpret.innerHTML = '🟢 Muito leve – ideal para início em pacientes frágeis ou pós‑evento agudo.';
+        else if (val <= 5) borgInterpret.innerHTML = '🟡 Leve a moderado – alvo para exercício aeróbico na fase hospitalar.';
+        else if (val <= 7) borgInterpret.innerHTML = '🟠 Moderado a forte – pode ser tolerado por pacientes mais condicionados, mas monitorar sintomas.';
+        else borgInterpret.innerHTML = '🔴 Forte a muito forte – geralmente não indicado na fase aguda hospitalar.';
+    }
+    borgSlider.addEventListener('input', updateBorg);
+    updateBorg();
+}
+		
 		// CALCULADORA NIHSS
 function calcularNIHSS() {
     const itens = ['1a', '1b', '1c', '2', '3', '4', '5a', '5b', '6a', '6b', '7', '8', '9', '10', '11'];
